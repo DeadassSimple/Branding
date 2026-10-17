@@ -1,0 +1,10 @@
+; .notdef: shown for characters the font does not have. Placeholder hollow box, one pixel thick.
+advance: 8
+top: 7
+#######
+#.....#
+#.....#
+#.....#
+#.....#
+#.....#
+#######

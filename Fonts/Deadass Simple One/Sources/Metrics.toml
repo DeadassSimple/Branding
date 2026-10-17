@@ -1,0 +1,22 @@
+# Font names and vertical layout. Sizes count grid pixels unless a key says otherwise.
+# Everything else (units per em, ascent, descent) is derived from these values by "Font Tools.py".
+
+[names]
+family = "Deadass Simple One"
+style = "Regular"
+version = "2026.10"       # must parse as a number; it becomes head.fontRevision
+copyright = "Copyright waived in 2026 by the author, Ky."
+license = """
+Usage of the works is permitted provided that this instrument is retained with the works, so that any entity that uses the works is notified of this instrument.
+
+DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY."""
+manufacturer = "Ky directing Claude Sonnet 5.5"
+designer = "Ky"
+vendor_url = "https://DeadassSimple.com"
+designer_url = "https://KyNorthstar.me"
+
+[grid]
+units_per_pixel = 100     # font units drawn per grid pixel
+cap_rows = 7              # rows from the baseline up to the top of a capital
+rows_above_cap = 3        # headroom reserved above capitals for accents and tall lowercase
+rows_below_baseline = 2   # depth reserved below the baseline for descenders
