@@ -19,7 +19,7 @@ Deadass Simple One is a custom font we made for brand shit.
 
 <img src="./Fonts/Deadass Simple One/Deadass Simple One • Specimen.png" style="min-width:111px;max-width:444px;" />
 
-You can download or compile it from [the Fonts folder](./Fonts/Deadass Simple One/Deadass Simple One Regular.ttf).
+You can download or compile it from [the Fonts folder](./Fonts/Deadass%20Simple%20One%20Deadass%20Simple%20One%20Regular.ttf).
 
 
 ### Color
