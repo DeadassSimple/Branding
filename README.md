@@ -17,7 +17,7 @@ Friendly, bold colors, simple pixel art.
 
 Deadass Simple One is a custom font we made for brand shit.
 
-<img src="./Fonts/Deadass Simple One/Deadass Simple One • Specimen.png" style="min-width:111px;max-width:444px;" />
+<img src="./Fonts/Deadass Simple One/Deadass Simple One • Specimen.png" width="444" />
 
 You can download or compile it from [the Fonts folder](./Fonts/Deadass%20Simple%20One%20Deadass%20Simple%20One%20Regular.ttf).
 
@@ -27,4 +27,4 @@ You can download or compile it from [the Fonts folder](./Fonts/Deadass%20Simple%
 Deadass Simple uses color in a deadass simple way.
 
 
-<img src="./Colors/Deadass%20Simple%20Brand%20Colors.png" style="min-width:128px;max-width:512px;" />
+<img src="./Colors/Deadass%20Simple%20Brand%20Colors.png" width="512" />
