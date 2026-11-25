@@ -7,7 +7,7 @@ Glyph sources are plain-text pixel grids, one `.glyph` file per Unicode codepoin
 Subcommands:
   extract-logo  read the logo PNG and write a .glyph file for each letter it contains
   import-svg    read SVG glyphs exported from Sketch and write a .glyph file for each new letter
-  build         turn the .glyph files into a TTF and an OTF
+  build         turn the .glyph files into a TTF, an OTF, and a WOFF2
   verify        render built fonts with FreeType and compare every pixel to the .glyph grids
   specimen      render the specimen text (SPECIMEN_LINES) from a built font as a PNG, in the logo's own colors
 
@@ -361,6 +361,13 @@ def build_fonts(source_directory: Path, output_directory: Path) -> list[Path]:
             f"ascent {reread['hhea'].ascent}, descent {reread['hhea'].descent}"
         )
         written.append(path)
+        if is_ttf:
+            woff2_path = path.with_suffix(".woff2")
+            woff2_font = TTFont(str(path))
+            woff2_font.flavor = "woff2"
+            woff2_font.save(str(woff2_path))
+            print(f"wrote {woff2_path} ({woff2_path.stat().st_size} bytes): the TTF, compressed")
+            written.append(woff2_path)
     return written
 
 
