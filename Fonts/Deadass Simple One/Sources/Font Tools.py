@@ -6,7 +6,7 @@ Glyph sources are plain-text pixel grids, one `.glyph` file per Unicode codepoin
 
 Subcommands:
   extract-logo  read the logo PNG and write a .glyph file for each letter it contains
-  import-svg    read SVG glyphs exported from Sketch and write a .glyph file for each new letter
+  import-svg    read SVG glyphs exported from Sketch and write a .glyph file for each new glyph
   build         turn the .glyph files into a TTF, an OTF, and a WOFF2
   verify        render built fonts with FreeType and compare every pixel to the .glyph grids
   specimen      render the specimen text (SPECIMEN_LINES) from a built font as a PNG, in the logo's own colors
@@ -647,12 +647,12 @@ def import_svg(source_directory: Path, svg_directory: Path, left_margin: int, gl
     for path in sorted(svg_directory.rglob("*.svg")):
         stem = path.stem
         match = re.fullmatch(r"U\+([0-9A-Fa-f]{4,6})", stem)
-        if 1 == len(stem) and stem.isascii() and stem.isalpha():
+        if 1 == len(stem) and stem.isprintable() and not stem.isspace():
             codepoint = ord(stem)
         elif None is not match:
             codepoint = int(match.group(1), 16)
         else:
-            problems.append(f"{path.name}: cannot tell the codepoint (name it with one ASCII letter or U+XXXX)")
+            problems.append(f"{path.name}: cannot tell the codepoint (name it with the one character or U+XXXX)")
             continue
         try:
             canvas = read_svg_canvas(path)
@@ -665,16 +665,19 @@ def import_svg(source_directory: Path, svg_directory: Path, left_margin: int, gl
         if left_margin + glyph_width > canvas.shape[1]:
             problems.append(f"{path.name}: canvas is {canvas.shape[1]} columns wide, narrower than the glyph box")
             continue
-        box = (slice(top_margin, top_margin + glyph_height), slice(left_margin, left_margin + glyph_width))
+        reach_height = glyph_height + metrics.rows_below_baseline  # a glyph may hang below the baseline
+        reach = (slice(top_margin, top_margin + reach_height), slice(left_margin, left_margin + glyph_width))
         outside = canvas.copy()
-        outside[box] = False
+        outside[reach] = False
         if outside.any():
             cells = [f"(column {c}, row {r})" for r, c in np.argwhere(outside)[:4]]
             problems.append(f"{path.name}: {int(outside.sum())} filled cells lie outside the glyph box, e.g. {', '.join(cells)}")
             continue
-        if not canvas[box].any():
+        if not canvas[reach].any():
             problems.append(f"{path.name}: nothing filled inside the glyph box")
             continue
+        filled_rows = np.flatnonzero(canvas[reach].any(axis=1))
+        box = (slice(top_margin, top_margin + max(glyph_height, 1 + int(filled_rows[-1]))), reach[1])
         if codepoint in imported:
             problems.append(f"{path.name}: duplicates the codepoint of {imported[codepoint][0]}")
             continue
@@ -712,7 +715,7 @@ def import_svg(source_directory: Path, svg_directory: Path, left_margin: int, gl
     for codepoint in sorted(new_codepoints + replaced_codepoints):
         name, grid = imported[codepoint]
         path = glyph_directory / f"U+{codepoint:04X}.glyph"
-        comment = f"{chr(codepoint)}, drawn in Sketch ({name}, {glyph_width}x{glyph_height} cells at column {left_margin}, row {top_margin})"
+        comment = f"{chr(codepoint)}, drawn in Sketch ({name}, {glyph_width}x{grid.shape[0]} cells at column {left_margin}, row {top_margin})"
         path.write_text(format_glyph_file(comment, glyph_width + 1, glyph_height, grid), encoding="utf-8")
         print(f"{'replaced' if codepoint in replaced_codepoints else 'wrote'} {path.name}")
         for row in grid:
