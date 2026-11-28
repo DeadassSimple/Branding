@@ -4,7 +4,7 @@
 [names]
 family = "Deadass Simple One"
 style = "Regular"
-version = "2026.10"       # must parse as a number; it becomes head.fontRevision
+version = "2026.11"       # must parse as a number; it becomes head.fontRevision
 copyright = "Copyright waived in 2026 by the author, Ky."
 license = """
 Usage of the works is permitted provided that this instrument is retained with the works, so that any entity that uses the works is notified of this instrument.
